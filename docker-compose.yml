@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+
+  # DATABASE POSTGRESQL
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: zeta-postgres
+    environment:
+      POSTGRES_DB: zeta_users
+      POSTGRES_USER: zeta
+      POSTGRES_PASSWORD: zeta_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zeta -d zeta_users"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - zeta-network
+
+
+  # USER SERVICE
+
+  user-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: zeta-user-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/zeta_users
+      SPRING_DATASOURCE_USERNAME: zeta
+      SPRING_DATASOURCE_PASSWORD: zeta_password
+    ports:
+      - "8081:8081"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - zeta-network
+
+# VOLUMI
+
+volumes:
+  postgres_data:
+
+# RETI
+networks:
+  zeta-network:
+    driver: bridge

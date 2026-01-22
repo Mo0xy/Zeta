@@ -21,7 +21,7 @@
     <modules>
         <module>common-lib</module>
         <module>user-service</module>
-        <module>pec-service</module>
+        <!-- <module>pec-service</module> -->
     </modules>
 
     <properties>
