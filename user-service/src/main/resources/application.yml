@@ -12,10 +12,27 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+    defer-datasource-initialization: true
     properties:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  sql:
+    init:
+      mode: always
+
+jwt:
+  # IMPORTANTE: In produzione bisogna usare una variabile d'ambiente o secret manager
+  # Deve essere almeno 256 bit (32 caratteri) per HS256
+  secret: ${JWT_SECRET:piattaforma-zeta-secret-key-deve-essere-molto-lunga-almeno-256-bit}
+
+  access-token-expiration-ms: ${JWT_ACCESS_EXPIRATION:900000} # 15 minuti
+
+  refresh-token-expiration-ms: ${JWT_REFRESH_EXPIRATION:604800000} # 7 giorni
+
+  # Issuer del token
+  issuer: ${JWT_ISSUER:piattaforma-zeta}
 
 server:
   port: 8081
