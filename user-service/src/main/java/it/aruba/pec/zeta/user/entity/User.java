@@ -41,10 +41,10 @@ public class User {
     @Builder.Default
     private boolean enabled = true;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    @Builder.Default
-    private UserRole role = UserRole.USER;
+//    @Enumerated(EnumType.STRING)
+//    @Column(nullable = false, length = 20)
+//    @Builder.Default
+//    private UserRole role = UserRole.USER;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
@@ -58,10 +58,10 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    public enum UserRole {
-        USER,
-        ADMIN
-    }
+//    public enum UserRole {
+//        USER,
+//        ADMIN
+//    }
 
     // Helper method per aggiungere credenziali servizio
     public void addServiceCredential(UserServiceCredential credential) {
