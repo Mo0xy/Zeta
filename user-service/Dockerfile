@@ -7,16 +7,17 @@ WORKDIR /workspace
 COPY pom.xml ./pom.xml
 COPY common-lib/pom.xml ./common-lib/pom.xml
 COPY user-service/pom.xml ./user-service/pom.xml
+COPY pec-service/pom.xml ./pec-service/pom.xml
 
 # Copia il codice sorgente
 COPY common-lib/src ./common-lib/src
 COPY user-service/src ./user-service/src
+COPY pec-service/src ./pec-service/src
 
-# Build del progetto (compila common-lib e user-service)
+# Build del progetto
 RUN mvn clean package -pl user-service -am -DskipTests
 
 # RUNTIME
-
 FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
