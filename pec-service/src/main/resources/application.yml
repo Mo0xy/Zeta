@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: pec-service
+
+  # Disabilita JPA/Database (non ci serve per il mock)
+  #autoconfigure:
+  #  exclude:
+  #    - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  #    - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+
+server:
+  port: 8082
+
+
+# Configurazione Mock Aruba
+aruba:
+  mock:
+    # URL base del mock (stesso servizio)
+    base-url: http://localhost:8082/mock/aruba
+
+    # Client ID assegnato da "Aruba"
+    client-id: zeta-platform-client
+
+    # Secret condiviso per calcolare HMAC
+    client-secret: aruba-shared-secret-key-molto-lunga-almeno-32-caratteri
+
+    # Validità del challenge in secondi (5 minuti)
+    challenge-validity-seconds: 300
+
+# Logging
+logging:
+  level:
+    root: INFO
+    it.aruba.pec.zeta: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
