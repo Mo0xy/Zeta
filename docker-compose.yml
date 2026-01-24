@@ -23,21 +23,36 @@ services:
 
 
   # USER SERVICE
-
   user-service:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: user-service/Dockerfile
     container_name: zeta-user-service
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/zeta_users
       SPRING_DATASOURCE_USERNAME: zeta
       SPRING_DATASOURCE_PASSWORD: zeta_password
+      JWT_SECRET: piattaforma-zeta-secret-key-deve-essere-molto-lunga-almeno-256-bit
     ports:
       - "8081:8081"
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - zeta-network
+
+  # PEC SERVICE
+  pec-service:
+    build:
+      context: .
+      dockerfile: pec-service/Dockerfile
+    container_name: zeta-pec-service
+    environment:
+      ARUBA_MOCK_BASE_URL: http://localhost:8082/mock/aruba
+      ARUBA_MOCK_CLIENT_ID: zeta-platform-client
+      ARUBA_MOCK_CLIENT_SECRET: aruba-shared-secret-key-molto-lunga-almeno-32-caratteri
+    ports:
+      - "8082:8082"
     networks:
       - zeta-network
 
