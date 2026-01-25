@@ -97,11 +97,12 @@ public class MockArubaController {
         }
 
         // 3. Verifica la firma HMAC
+
         boolean validSignature = ArubaHmacUtils.verifySignature(
                 signature,
                 challenge.getTimestamp(),
                 challenge.getNonce(),
-                challenge.getClientId(),
+                (challenge.getClientId() == null) ? clientId : challenge.getClientId(),
                 clientSecret
         );
 
@@ -122,6 +123,66 @@ public class MockArubaController {
 
         return ResponseEntity.ok(response);
     }
+
+    /**
+     * Endpoint di test: calcolo HMAC.
+     *
+     * POST /mock/aruba/verify-hmac
+     * Body: { timestamp, nonce, clientId, signature }
+     */
+    @PostMapping("/calculate-hmac")
+    public ResponseEntity<Map<String, String>> calculateHmac(
+            @RequestBody Map<String, String> request) {
+
+        String timestampStr = request.get("timestamp");
+        String nonce = request.get("nonce");
+        String clientId = request.get("client_id");
+
+        LocalDateTime timestamp = LocalDateTime.parse(timestampStr);
+
+        String signature = ArubaHmacUtils.calculateSignature(
+                timestamp,
+                nonce,
+                clientId,
+                clientSecret
+        );
+
+        log.info("HMAC calcolato per client {}: {}", clientId, signature);
+
+        return ResponseEntity.ok(Map.of("signature", signature));
+    }
+
+    /**
+     * Endpoint di test: verifica HMAC.
+     *
+     * POST /mock/aruba/verify-hmac
+     * Body: { timestamp, nonce, clientId, signature }
+     */
+    @PostMapping("/verify-hmac")
+    public ResponseEntity<Map<String, Boolean>> verifyHmac(
+            @RequestBody Map<String, String> request) {
+
+        String timestampStr = request.get("timestamp");
+        String nonce = request.get("nonce");
+        String clientId = request.get("client_id");
+        String signature = request.get("signature");
+
+        LocalDateTime timestamp = LocalDateTime.parse(timestampStr);
+
+        boolean valid = ArubaHmacUtils.verifySignature(
+                signature,
+                timestamp,
+                nonce,
+                clientId,
+                clientSecret
+        );
+
+        log.info("Verifica HMAC per client {}: {}", clientId, valid);
+
+        return ResponseEntity.ok(Map.of("valid", valid));
+    }
+
+
 
     /**
      * Costruisce una inbox PEC con dati mock.

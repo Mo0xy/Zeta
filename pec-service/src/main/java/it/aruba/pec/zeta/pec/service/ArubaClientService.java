@@ -52,7 +52,7 @@ public class ArubaClientService {
         log.info("Inizio recupero inbox PEC da Aruba");
 
         try {
-            // STEP 1: Richiedi il challenge
+            // STEP 1: Richiede il challenge
             log.debug("Step 1: Richiesta challenge a {}/challenge", baseUrl);
 
             ArubaAuthChallengeDTO challenge = webClient.get()
