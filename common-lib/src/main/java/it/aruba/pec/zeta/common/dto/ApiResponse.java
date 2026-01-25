@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 public class ApiResponse<T> {
 
     private boolean success;
+    private String token;
     private String message;
     private T data;
     private String errorCode;
@@ -24,6 +25,14 @@ public class ApiResponse<T> {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @Builder.Default
     private LocalDateTime timestamp = LocalDateTime.now();
+
+    public static <T> ApiResponse<T> successLogin(String accessToken, String message) {
+        return ApiResponse.<T>builder()
+                .success(true)
+                .token(accessToken)
+                .message(message)
+                .build();
+    }
 
     public static <T> ApiResponse<T> success(T data) {
         return ApiResponse.<T>builder()

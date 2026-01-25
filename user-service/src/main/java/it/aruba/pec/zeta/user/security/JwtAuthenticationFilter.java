@@ -47,7 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             if (StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)) {
 
-                // Verifica che sia un access token (non un refresh token)
+                // Verifica che sia un access token
                 if (!jwtTokenProvider.isAccessToken(jwt)) {
                     log.warn("Tentativo di accesso con refresh token");
                     filterChain.doFilter(request, response);

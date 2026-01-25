@@ -40,7 +40,7 @@ public class AuthController {
 
         LoginResponseDTO response = authService.login(request);
 
-        return ResponseEntity.ok(ApiResponse.success(response, "Login effettuato con successo"));
+        return ResponseEntity.ok(ApiResponse.successLogin(response.getAccessToken(), "Login effettuato con successo"));
     }
 // debug
 //    @GetMapping("/hash/{password}")
