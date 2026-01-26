@@ -8,12 +8,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 /**
  * Controller per l'autenticazione.
- *
  * Endpoint pubblici (non richiedono token):
  * - POST /api/auth/login
  */
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
-    private final PasswordEncoder passwordEncoder;
 
     /**
      * Effettua il login e restituisce il token JWT.
@@ -42,9 +39,5 @@ public class AuthController {
 
         return ResponseEntity.ok(ApiResponse.successLogin(response.getAccessToken(), "Login effettuato con successo"));
     }
-// debug
-//    @GetMapping("/hash/{password}")
-//    public ResponseEntity<String> generateHash(@PathVariable String password) {
-//        return ResponseEntity.ok(passwordEncoder.encode(password));
-//    }
+
 }

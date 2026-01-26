@@ -6,8 +6,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -46,10 +44,6 @@ public class User {
 //    @Builder.Default
 //    private UserRole role = UserRole.USER;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
-    private List<UserServiceCredential> serviceCredentials = new ArrayList<>();
-
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -62,15 +56,4 @@ public class User {
 //        USER,
 //        ADMIN
 //    }
-
-    // Helper method per aggiungere credenziali servizio
-    public void addServiceCredential(UserServiceCredential credential) {
-        serviceCredentials.add(credential);
-        credential.setUser(this);
-    }
-
-    public void removeServiceCredential(UserServiceCredential credential) {
-        serviceCredentials.remove(credential);
-        credential.setUser(null);
-    }
 }

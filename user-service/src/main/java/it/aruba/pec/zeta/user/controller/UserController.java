@@ -146,8 +146,7 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.success(null, "Utente eliminato"));
     }
 
-    // === Inner classes per request bodies ===
-
+    // Classi per i body delle richieste
     @lombok.Data
     public static class CreateUserRequest {
         @Valid
